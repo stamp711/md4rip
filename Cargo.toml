@@ -1,0 +1,13 @@
+[package]
+name = "md4rip"
+version = "0.1.0"
+authors = ["Apricity <stamp1024@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+byteorder = "1.3.1"
+rand = "0.6.5"
+block-buffer = "0.7.0"
+lazy_static = "1.3.0"
+itertools = "0.8.0"
+md4 = "0.8.0"
