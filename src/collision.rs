@@ -1,6 +1,7 @@
 use crate::common::*;
 use crate::state::MD4State;
 use byteorder::{ByteOrder, LE};
+use lazy_static::lazy_static;
 use rand;
 
 pub struct CollisionFinder {
