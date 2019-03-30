@@ -21,9 +21,9 @@ mod tests {
         let mut builder = Builder::new();
         match builder.build() {
             Ok((padding, m1, m2)) => {
-                println!("Padding: {:02x}", padding.iter().format(""));
-                println!("M1: {:02x}", m1.iter().format(""));
-                println!("M2: {:02x}", m2.iter().format(""));
+                println!("Padding : {:02x}", padding.iter().format(""));
+                println!("Message1: {:02x}", m1.iter().format(""));
+                println!("Message2: {:02x}", m2.iter().format(""));
 
                 let mut hasher1 = Md4::new();
                 let mut hasher2 = Md4::new();
@@ -52,9 +52,9 @@ mod tests {
 
         match builder.build() {
             Ok((padding, m1, m2)) => {
-                println!("Padding: {:02x}", padding.iter().format(""));
-                println!("M1: {:02x}", m1.iter().format(""));
-                println!("M2: {:02x}", m2.iter().format(""));
+                println!("Padding : {:02x}", padding.iter().format(""));
+                println!("Message1: {:02x}", m1.iter().format(""));
+                println!("Message2: {:02x}", m2.iter().format(""));
 
                 let mut hasher1 = Md4::new();
                 let mut hasher2 = Md4::new();
