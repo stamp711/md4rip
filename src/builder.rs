@@ -37,7 +37,7 @@ impl Builder {
             padding.extend_from_slice(&vec![0u8; remaining]);
             let self_state = &mut self.state;
             self.buffer
-                .input(&padding.clone(), |d: &U8Block| self_state.apply_block(d));
+                .input(&padding, |d: &U8Block| self_state.apply_block(d));
         }
 
         let mut finder = CollisionFinder::from(self.state);
