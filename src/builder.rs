@@ -40,8 +40,6 @@ impl Builder {
                 .input(&padding.clone(), |d: &U8Block| self_state.apply_block(d));
         }
 
-        assert_eq!(self.buffer.position(), 0);
-
         let mut finder = CollisionFinder::from(self.state);
         loop {
             match finder.find_once() {
