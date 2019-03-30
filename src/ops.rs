@@ -1,3 +1,5 @@
+#![allow(clippy::many_single_char_names)]
+
 // F acts as a conditional: if X then Y else Z
 pub fn f(x: u32, y: u32, z: u32) -> u32 {
     (x & y) | (!x & z)
@@ -13,12 +15,10 @@ pub fn h(x: u32, y: u32, z: u32) -> u32 {
     x ^ y ^ z
 }
 
-#[allow(clippy::many_single_char_names)]
 pub fn op1(a: u32, b: u32, c: u32, d: u32, m: u32, s: u32) -> u32 {
     a.wrapping_add(f(b, c, d)).wrapping_add(m).rotate_left(s)
 }
 
-#[allow(clippy::many_single_char_names)]
 pub fn op2(a: u32, b: u32, c: u32, d: u32, m: u32, s: u32) -> u32 {
     a.wrapping_add(g(b, c, d))
         .wrapping_add(m)
@@ -26,7 +26,6 @@ pub fn op2(a: u32, b: u32, c: u32, d: u32, m: u32, s: u32) -> u32 {
         .rotate_left(s)
 }
 
-#[allow(clippy::many_single_char_names)]
 pub fn op3(a: u32, b: u32, c: u32, d: u32, m: u32, s: u32) -> u32 {
     a.wrapping_add(h(b, c, d))
         .wrapping_add(m)
@@ -34,12 +33,10 @@ pub fn op3(a: u32, b: u32, c: u32, d: u32, m: u32, s: u32) -> u32 {
         .rotate_left(s)
 }
 
-#[allow(clippy::many_single_char_names)]
 pub fn op1_t(v: u32, s: u32, a: u32, b: u32, c: u32, d: u32) -> u32 {
     v.rotate_right(s).wrapping_sub(a).wrapping_sub(f(b, c, d))
 }
 
-#[allow(clippy::many_single_char_names)]
 pub fn op2_t(v: u32, s: u32, a: u32, b: u32, c: u32, d: u32) -> u32 {
     v.rotate_right(s)
         .wrapping_sub(a)
