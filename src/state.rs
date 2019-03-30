@@ -63,7 +63,12 @@ impl MD4State {
         }
 
         MD4State {
-            s: [a + self.s[0], b + self.s[1], c + self.s[2], d + self.s[3]],
+            s: [
+                a.wrapping_add(self.s[0]),
+                b.wrapping_add(self.s[1]),
+                c.wrapping_add(self.s[2]),
+                d.wrapping_add(self.s[3]),
+            ],
         }
     }
 }
