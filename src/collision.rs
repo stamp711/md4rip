@@ -8,6 +8,7 @@ pub struct CollisionFinder {
     init: MD4State,
     state: MD4State,
     data: U32Block,
+    jpeg_mode: bool,
 }
 
 enum Kind {
@@ -58,7 +59,12 @@ impl CollisionFinder {
             init: state,
             state: Default::default(),
             data: Default::default(),
+            jpeg_mode: false,
         }
+    }
+
+    pub fn set_jpeg_mode(&mut self, j: bool) {
+        self.jpeg_mode = j;
     }
 
     fn first_round_single_step(&mut self, step: usize, s: usize, shift: u32) {
@@ -204,18 +210,28 @@ impl CollisionFinder {
         self.state.s[3] = d5;
     }
 
+    fn init_message(&mut self) {
+        for i in &mut self.data {
+            *i = rand::random();
+        }
+        // specific generator for jpeg_mode
+        if self.jpeg_mode {
+            self.data[1] = 0x0001_FEFF + (self.data[1] & 0xFF00_0000);
+        }
+    }
+
+    fn message_filter(&self, b1: &U8Block, b2: &U8Block) -> bool {
+        self.init.process_block(&b1) == self.init.process_block(&b2)
+            // specific filter for jpeg_mode
+            && if self.jpeg_mode { self.data[1] & 0x00FF_FFFF == 0x0001_FEFF } else { true }
+    }
+
     pub fn find_once(&mut self) -> Option<(U8Block, U8Block)> {
         // Copy init state to state
         self.state = self.init;
 
         // Generate random message
-        for i in &mut self.data {
-            *i = rand::random();
-        }
-
-        // Convert result into u8 array
-        let mut b1 = U8Block::default();
-        LE::write_u32_into(&self.data, &mut b1);
+        self.init_message();
 
         // First round
         let shift = [3, 7, 11, 19];
@@ -224,12 +240,12 @@ impl CollisionFinder {
             self.first_round_single_step(i, target_s[i % 4], shift[i % 4]);
         }
 
-        LE::write_u32_into(&self.data, &mut b1);
-
         // Second round
         self.second_round_a5();
         self.second_round_d5();
 
+        // Convert result into u8 array
+        let mut b1 = U8Block::default();
         LE::write_u32_into(&self.data, &mut b1);
 
         // Create collision message
@@ -240,7 +256,7 @@ impl CollisionFinder {
         let mut b2 = U8Block::default();
         LE::write_u32_into(&self.data, &mut b2);
 
-        if self.init.process_block(&b1) == self.init.process_block(&b2) {
+        if self.message_filter(&b1, &b2) {
             Some((b1, b2))
         } else {
             None

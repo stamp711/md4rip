@@ -9,11 +9,16 @@ pub struct Builder {
     buffer: BlockBuffer<U64>,
     state: MD4State,
     timeout_sec: usize,
+    jpeg_mode: bool,
 }
 
 impl Builder {
     pub fn new() -> Builder {
         Builder::default()
+    }
+
+    pub fn set_jpeg_mode(&mut self, j: bool) {
+        self.jpeg_mode = j;
     }
 
     pub fn input<B: AsRef<[u8]>>(&mut self, input: B) {
@@ -42,6 +47,7 @@ impl Builder {
         }
 
         let mut finder = CollisionFinder::from(self.state);
+        finder.set_jpeg_mode(self.jpeg_mode);
         loop {
             match finder.find_once() {
                 Some((m1, m2)) => {

@@ -23,6 +23,9 @@ pub struct Opt {
     #[structopt(name = "OUTPUT2", parse(from_os_str))]
     /// Path for output file 2
     output2: PathBuf,
+    /// Enable to find specific pattern (0x__01FEFF) for JPEG COMMENT on second word
+    #[structopt(short = "j", long = "jpeg")]
+    jpeg_mode: bool,
 }
 
 fn parse_existing_file(s: &OsStr) -> Result<PathBuf, OsString> {
@@ -97,6 +100,7 @@ impl App {
 
         // Feed prefix into builder
         let mut builder = Builder::new();
+        builder.set_jpeg_mode(opt.jpeg_mode);
         std::io::copy(&mut reader, &mut builder).unwrap();
 
         // Build
