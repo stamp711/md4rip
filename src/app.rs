@@ -73,7 +73,7 @@ impl App {
         });
     }
 
-    fn md4sum(path: &PathBuf) -> String {
+    pub fn md4sum(path: &PathBuf) -> String {
         let file =
             File::open(path).unwrap_or_else(|_| panic!("failed to open file {}", path.display()));
         let mut reader = BufReader::new(file);
