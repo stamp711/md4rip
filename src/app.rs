@@ -128,13 +128,13 @@ impl App {
                 println!(
                     "MD4Sum for {}: {}",
                     opt.output1.display(),
-                    App::md4sum(&opt.output1)
+                    md4sum1
                 );
 
                 println!(
                     "MD4Sum for {}: {}",
                     opt.output2.display(),
-                    App::md4sum(&opt.output2)
+                    md4sum2
                 );
 
                 if md4sum1 == md4sum2 {
